@@ -1,0 +1,16 @@
+build/
+cmake-build-*/
+main
+CMakeFiles/
+CMakeCache.txt
+CMakeScripts/
+CMakeScratch/
+
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+TargetDirectories.txt
+
+*.log
