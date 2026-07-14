@@ -18,3 +18,8 @@ target_compile_options(main PRIVATE -Wall -Wextra -O2)
 
 # sleep sort uses threads
 target_link_libraries(main PRIVATE pthread)
+
+set_target_properties(
+    main PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/
+)
