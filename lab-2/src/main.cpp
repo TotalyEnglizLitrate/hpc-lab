@@ -15,15 +15,13 @@ static Matrix make_random(int N, unsigned seed) {
     return M;
 }
 
-static void run_one(const Variant &v, int N, int reps) {
+static void run_one(const Variant &v, int N) {
     Matrix A = make_random(N, 1);
     Matrix B = make_random(N, 2);
     Matrix C(N, std::vector<int>(N, 0));
 
-    for (int r = 0; r < reps; r++) {
-        for (auto &row : C) std::fill(row.begin(), row.end(), 0.0);
-        v.fn(A, B, C, N);
-    }
+    for (auto &row : C) std::fill(row.begin(), row.end(), 0.0);
+    v.fn(A, B, C, N);
 
     double checksum = 0.0;
     for (auto &row : C) for (double x : row) checksum += x;
@@ -31,7 +29,6 @@ static void run_one(const Variant &v, int N, int reps) {
 
 int main(int argc, char **argv) {
     int N = argc > 2 ? std::atoi(argv[2]) : 512;
-    int reps = argc > 3 ? std::atoi(argv[3]) : 5;
 
     if (argc > 1 && std::string(argv[1]) != "all") {
         // Single-variant mode: `./main ikj 512 20`
@@ -41,7 +38,7 @@ int main(int argc, char **argv) {
         std::string name = argv[1];
         for (auto &v : variants()) {
             if (name == v.name) {
-                run_one(v, N, reps);
+                run_one(v, N);
                 return 0;
             }
         }
@@ -52,6 +49,6 @@ int main(int argc, char **argv) {
     // "all" mode: quick side-by-side wall-clock comparison, not meant for
     // perf record (samples from all six would land in one profile).
     for (auto &v : variants())
-        run_one(v, N, reps);
+        run_one(v, N);
     return 0;
 }
