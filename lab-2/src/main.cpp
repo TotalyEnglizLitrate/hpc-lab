@@ -7,8 +7,8 @@
 
 static Matrix make_random(int N, unsigned seed) {
     std::mt19937 rng(seed);
-    std::uniform_int_distribution<int> dist(-1000, 1000);
-    Matrix M(N, std::vector<int>(N));
+    std::uniform_real_distribution<double> dist(-100., 100.);
+    Matrix M(N, std::vector<double>(N));
     for (auto &row : M)
         for (auto &v : row)
             v = dist(rng);
@@ -18,7 +18,7 @@ static Matrix make_random(int N, unsigned seed) {
 static void run_one(const Variant &v, int N) {
     Matrix A = make_random(N, 1);
     Matrix B = make_random(N, 2);
-    Matrix C(N, std::vector<int>(N, 0));
+    Matrix C(N, std::vector<double>(N, 0));
 
     for (auto &row : C) std::fill(row.begin(), row.end(), 0.0);
     v.fn(A, B, C, N);

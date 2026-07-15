@@ -2,7 +2,7 @@
 
 #include <vector>
 
-using Matrix = std::vector<std::vector<int>>;
+using Matrix = std::vector<std::vector<double>>;
 
 #define LOOP3(a, b, c, BODY) \
     for (int a = 0; a < N; a++) \
