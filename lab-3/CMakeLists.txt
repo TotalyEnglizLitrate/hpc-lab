@@ -16,3 +16,15 @@ set_target_properties(
     main PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/
 )
+
+add_executable(
+    bench_access_time
+    src/bench_access_time.cpp
+)
+
+target_compile_options(bench_access_time PRIVATE -Wall -Wextra -O2)
+
+set_target_properties(
+    bench_access_time PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/
+)
