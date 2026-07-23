@@ -1,9 +1,14 @@
 #include <algorithm>
 #include <cstdlib>
 #include <cerrno>
+#include <chrono>
 #include <iostream>
 #include <vector>
 #include <random>
+
+
+using Clock = std::chrono::high_resolution_clock;
+
 
 enum Mode {
     Branched,
@@ -73,7 +78,11 @@ int main(int argc, char *argv[]) {
     std::vector<int> vec(vec_size);
     populate_vec(vec, dataset);
 
-    std::cout << "Sum: " << run_sum(vec, threshold, mode) << std::endl;
+    auto start = Clock::now();
+    long long _ = run_sum(vec, threshold, mode);
+    auto end = Clock::now();
+    double ns = std::chrono::duration<double, std::nano>(end - start).count();
+    std::cout << "Execution time: " << ns << "ns" << std::endl;
 
     return 0;
 }
