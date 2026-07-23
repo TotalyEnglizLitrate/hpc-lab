@@ -10,23 +10,29 @@ enum Mode {
     Branchless
 };
 
-void populate_vec(std::vector<int>& vec);
+enum Dataset {
+    Sorted,
+    Random
+};
+
+void populate_vec(std::vector<int>& vec, Dataset dataset);
 long long run_sum(const std::vector<int>& vec, int threshold, Mode mode);
 
 int main(int argc, char *argv[]) {
     bool invalid_args = false;
-    if (argc != 4) {
+    if (argc != 5) {
         invalid_args = true;
     }
 
     int vec_size, threshold;
     Mode mode;
+    Dataset dataset;
 
     if (!invalid_args) {
         errno = 0;
         char* end = nullptr;
         long v = std::strtol(argv[1], &end, 10);
-        
+
         if (errno != 0 || end == argv[1] || *end != '\0' || v <= 0 || v > std::numeric_limits<int>::max())
             invalid_args = true;
         else vec_size = static_cast<int>(v);
@@ -47,22 +53,32 @@ int main(int argc, char *argv[]) {
             else
                 invalid_args = true;
         }
+
+        if (!invalid_args) {
+            std::string dataset_arg = std::string(argv[4]);
+            if (dataset_arg == "sorted")
+                dataset = Sorted;
+            else if (dataset_arg == "random")
+                dataset = Random;
+            else
+                invalid_args = true;
+        }
     }
 
     if (invalid_args) {
-        std::cout << "Usage: " << argv[0] << " <array size> <threshold> <branch|branchless>" << std::endl;
+        std::cout << "Usage: " << argv[0] << " <array size> <threshold> <branch|branchless> <sorted|random>" << std::endl;
         return 2;
     }
 
     std::vector<int> vec(vec_size);
-    populate_vec(vec);
+    populate_vec(vec, dataset);
 
     std::cout << "Sum: " << run_sum(vec, threshold, mode) << std::endl;
 
     return 0;
 }
 
-void populate_vec(std::vector<int>& vec) {
+void populate_vec(std::vector<int>& vec, Dataset dataset) {
     std::random_device rd;
     std::mt19937_64 gen(rd());
 
@@ -74,6 +90,9 @@ void populate_vec(std::vector<int>& vec) {
     std::generate(vec.begin(), vec.end(), [&]() {
         return dis(gen);
     });
+
+    if (dataset == Sorted)
+        std::sort(vec.begin(), vec.end());
 }
 
 long long run_sum(const std::vector<int>& vec, int threshold, Mode mode) {
