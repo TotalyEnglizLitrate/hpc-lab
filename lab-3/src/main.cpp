@@ -21,7 +21,7 @@ enum Dataset {
 };
 
 void populate_vec(std::vector<int>& vec, Dataset dataset);
-long long run_sum(const std::vector<int>& vec, int threshold, Mode mode);
+extern "C" long long run_sum(const std::vector<int>& vec, int threshold, Mode mode);
 
 int main(int argc, char *argv[]) {
     bool invalid_args = false;
