@@ -6,6 +6,7 @@
 #include <vector>
 #include <random>
 
+#include <sys/prctl.h>
 
 using Clock = std::chrono::high_resolution_clock;
 
@@ -24,6 +25,7 @@ void populate_vec(std::vector<int>& vec, Dataset dataset);
 extern "C" long long run_sum(const std::vector<int>& vec, int threshold, Mode mode);
 
 int main(int argc, char *argv[]) {
+    prctl(PR_TASK_PERF_EVENTS_DISABLE);
     bool invalid_args = false;
     if (argc != 5) {
         invalid_args = true;
@@ -78,9 +80,11 @@ int main(int argc, char *argv[]) {
     std::vector<int> vec(vec_size);
     populate_vec(vec, dataset);
 
+    prctl(PR_TASK_PERF_EVENTS_ENABLE);
     auto start = Clock::now();
     long long _ = run_sum(vec, threshold, mode);
     auto end = Clock::now();
+    prctl(PR_TASK_PERF_EVENTS_ENABLE);
     double ns = std::chrono::duration<double, std::nano>(end - start).count();
     std::cout << "Execution time: " << ns << "ns" << std::endl;
 
