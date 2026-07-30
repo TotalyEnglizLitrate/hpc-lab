@@ -18,3 +18,4 @@ TargetDirectories.txt
 
 *.odt
 submission.pdf
+benchmark_results.json
