@@ -1,0 +1,4 @@
+build/
+benchmark_results.json
+vecreport_*.txt
+*.png
